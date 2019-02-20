@@ -1,6 +1,6 @@
 //
 //  Hacker_Rank_AppTests.swift
-//  Hacker Rank AppTests
+//  Hacker News AppTests
 //
 //  Created by Alaeldin Tirba on 2/14/19.
 //  Copyright © 2019 Alaeldin Tirba. All rights reserved.

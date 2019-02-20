@@ -7,24 +7,70 @@
 //
 
 import UIKit
+import Foundation
+import MBProgressHUD
 
-class AskTableViewController: UIViewController {
+class AskViewController: UIViewController, ReusableTableViewDelegate {
 
+    @IBOutlet weak var tableView: UITableView!
+    var asks: [Item]!
+    var listOfStoriesID: [Int32]?
+    var reuseableTable: ReusableTableViewController!
+    var reuseableTableDelegate: ReusableTableViewDelegate?
+    var selectedItem: Item!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewWillAppear(_ animated: Bool) {
+        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.mode = .annularDeterminate
+        hud.label.text = "Fetching Questions"
+        HackerNewsAPI.getListOfStoriesAndDownload(type: .askStories) { downloadedStories,lstOfStories in
+            DispatchQueue.main.async {
+                self.asks = downloadedStories
+                self.listOfStoriesID = lstOfStories
+                self.reuseableTable = ReusableTableViewController(self.tableView, downloadedStories, availableForDownload: lstOfStories, viewController: self, nibFileName: "StoryTableViewCell")
+                self.reuseableTable.delegate = self
+                self.tableView.reloadData()
+                hud.hide(animated: true)
+            }
+            
+        }
+        hud.hide(animated: true)
     }
-    */
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueToDetails" {
+            //swiftlint:disable force_cast
+            let detailsVC = segue.destination as! TextViewController
+            detailsVC.ask = selectedItem
+            //swiftlint:enable force_cast
+        }
+    }
+    
+    func didSelect(item: Item) {
+        selectedItem = item
+    }
 
+    
 }
+
+
+extension String {
+    var htmlToAttributedString: NSAttributedString? {
+        guard let data = data(using: .utf8) else { return NSAttributedString() }
+        do {
+            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue], documentAttributes: nil)
+        } catch {
+            return NSAttributedString()
+        }
+    }
+    var htmlToString: String {
+        return htmlToAttributedString?.string ?? ""
+    }
+}
+
+

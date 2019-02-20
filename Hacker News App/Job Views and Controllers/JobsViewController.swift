@@ -7,24 +7,32 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class JobsViewController: UIViewController {
 
+    @IBOutlet weak var tableView: UITableView!
+    var stories: [Item]!
+    var listOfStoriesID: [Int32]?
+    var reuseTable: ReusableTableViewController!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewWillAppear(_ animated: Bool) {
+        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.mode = .annularDeterminate
+        hud.label.text = "Fetching Jobs"
+        HackerNewsAPI.getListOfStoriesAndDownload(type: .job) { downloadedStories,lstOfStories in
+            DispatchQueue.main.async {
+                self.stories = downloadedStories
+                self.listOfStoriesID = lstOfStories
+                self.reuseTable = ReusableTableViewController(self.tableView, downloadedStories, availableForDownload: lstOfStories, viewController: self, nibFileName: "JobTableViewCell")
+                self.tableView.reloadData()
+                hud.hide(animated: true)
+            }
+        }
+        hud.hide(animated: true)
     }
-    */
 
 }

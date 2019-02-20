@@ -8,8 +8,10 @@
 
 import UIKit
 
-class AskTableViewCell: UITableViewCell {
+class AskTitleTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var askDetailLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -21,4 +23,9 @@ class AskTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func configure(with ask: Item){
+        if ask  != nil {
+            self.askDetailLabel.text = ask.text?.htmlToString
+        }
+    }
 }

@@ -10,15 +10,28 @@ import UIKit
 
 class CommentTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var daysSinceLabel: UILabel!
+    @IBOutlet weak var numOfKidsLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        self.separatorInset = UIEdgeInsets.zero
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    }
+    
+    func configure(with comment: Item?) {
+        if let comment = comment {
+            commentLabel.text = comment.text?.htmlToString
+            authorLabel.text = comment.author
+            daysSinceLabel.text = comment.dateSince
+            let kids = comment.kids as? [Int32]
+            numOfKidsLabel.text = "+\(kids?.count ?? 0)"
+        }
     }
     
 }
