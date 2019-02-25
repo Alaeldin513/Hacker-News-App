@@ -49,7 +49,7 @@ class HackerNewsAPI {
         WebServiceManager.shared.get(url, headerFields: [:], success: getSuccess, failure: getFailure)
     }
     
-    class func get(typeOfQuery:TypeOfStories, completion: @escaping ((Result<[Int32]>) -> Void)) {
+    class func get(typeOfQuery: TypeOfStories, completion: @escaping ((Result<[Int32]>) -> Void)) {
         let path = "\(typeOfQuery.rawValue).json"
         let url = URL(string: path, relativeTo: HackerNewsAPI.baseURL)!
         let  getSuccess: ((Data) -> Void) = { data in
@@ -89,7 +89,7 @@ class HackerNewsAPI {
                 case .success(let story):
                     storiesToReturn.append(story)
                     taskGroup.leave()
-                case .failure(_):
+                case .failure:
                     taskGroup.leave()
                     
                 }
@@ -101,7 +101,7 @@ class HackerNewsAPI {
             storiesToReturn.append(contentsOf: persistedStories)
             completion(storiesToReturn)
             DispatchQueue.main.async {
-                CoreDataService.saveContext()
+                try? CoreDataService.saveContext()
             }
         }))
         
@@ -118,7 +118,7 @@ class HackerNewsAPI {
                     downloadList = lst 
                     completion(downloadList ?? [], stories)
                 }
-            case .failure( _):
+            case .failure:
                 completion(downloadList ?? [], [])
             }
         }
@@ -129,7 +129,6 @@ class HackerNewsAPI {
         if let object = object as? [String: Any] {
             guard let newData = try? JSONSerialization.data(withJSONObject: object, options: .prettyPrinted) else {
                 return
-                
             }
             guard String(data: newData, encoding: .utf8) != nil else { return }
         }
@@ -137,9 +136,8 @@ class HackerNewsAPI {
     
     class func parseJson(data: Data) throws -> Item {
         guard let codingUserInfoKeyManagedObjectContext = CodingUserInfoKey.managedObjectContext else {
-            fatalError("Failed to retrieve context")
+            throw ContextErrors.errorLoading("Unable to get context.")
         }
-        
         let decoder = JSONDecoder()
         decoder.userInfo[codingUserInfoKeyManagedObjectContext] = CoreDataService.context
         printJSON(data: data)

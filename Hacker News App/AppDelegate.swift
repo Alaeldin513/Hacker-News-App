@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var context = CoreDataService.context
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //CoreDataService.deleteAllData("Item")
                 return true
     }
@@ -36,9 +36,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        CoreDataService.saveContext()
+        do {
+            try CoreDataService.saveContext()
+        } catch ContextErrors.errorLoading(let errorString) {
+            print(errorString)
+        } catch {
+            print("error")
+        }
     }
 
 
 }
-

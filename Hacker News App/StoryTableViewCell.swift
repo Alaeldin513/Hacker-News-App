@@ -31,7 +31,6 @@ class StoryTableViewCell: UITableViewCell {
     
     func configure(with story: Item) {
         DispatchQueue.main.async {
-            var dateString = ""
             self.titleLabel.text = story.title
             self.numOfLikesLabel.text = "\(story.score)"
             self.numOfCommentsLabel.text = "\(story.descendants)"

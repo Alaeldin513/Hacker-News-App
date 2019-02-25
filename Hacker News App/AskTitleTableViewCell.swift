@@ -23,7 +23,7 @@ class AskTitleTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configure(with ask: Item){
+    func configure(with ask: Item) {
         if ask  != nil {
             self.askDetailLabel.text = ask.text?.htmlToString
         }

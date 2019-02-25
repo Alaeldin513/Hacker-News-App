@@ -54,7 +54,7 @@ class Job: NSManagedObject, Decodable {
         self.dateSince = calculateDaysSince(startDate: time ?? Date())
     }
     
-    func calculateDaysSince(startDate: Date)  -> String {
+    func calculateDaysSince(startDate: Date) -> String {
         let currentDate = Date()
         let components = Set<Calendar.Component>([.second, .minute, .hour, .day, .month, .year])
         let differenceOfDate = Calendar.current.dateComponents(components, from: startDate, to: currentDate)
@@ -74,4 +74,3 @@ class Job: NSManagedObject, Decodable {
         
     }
 }
-

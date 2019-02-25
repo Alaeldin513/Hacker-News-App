@@ -20,10 +20,10 @@ class JobsViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.mode = .annularDeterminate
         hud.label.text = "Fetching Jobs"
-        HackerNewsAPI.getListOfStoriesAndDownload(type: .job) { downloadedStories,lstOfStories in
+        HackerNewsAPI.getListOfStoriesAndDownload(type: .job) { downloadedStories, lstOfStories in
             DispatchQueue.main.async {
                 self.stories = downloadedStories
                 self.listOfStoriesID = lstOfStories
@@ -32,7 +32,6 @@ class JobsViewController: UIViewController {
                 hud.hide(animated: true)
             }
         }
-        hud.hide(animated: true)
     }
 
 }

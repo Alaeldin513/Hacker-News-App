@@ -25,10 +25,10 @@ class AskViewController: UIViewController, ReusableTableViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.mode = .annularDeterminate
         hud.label.text = "Fetching Questions"
-        HackerNewsAPI.getListOfStoriesAndDownload(type: .askStories) { downloadedStories,lstOfStories in
+        HackerNewsAPI.getListOfStoriesAndDownload(type: .askStories) { downloadedStories, lstOfStories in
             DispatchQueue.main.async {
                 self.asks = downloadedStories
                 self.listOfStoriesID = lstOfStories
@@ -37,9 +37,7 @@ class AskViewController: UIViewController, ReusableTableViewDelegate {
                 self.tableView.reloadData()
                 hud.hide(animated: true)
             }
-            
         }
-        hud.hide(animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -63,7 +61,7 @@ extension String {
     var htmlToAttributedString: NSAttributedString? {
         guard let data = data(using: .utf8) else { return NSAttributedString() }
         do {
-            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue], documentAttributes: nil)
+            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
         } catch {
             return NSAttributedString()
         }
@@ -72,5 +70,3 @@ extension String {
         return htmlToAttributedString?.string ?? ""
     }
 }
-
-

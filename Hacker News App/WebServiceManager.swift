@@ -30,7 +30,7 @@ class WebServiceManager {
     
     
     fileprivate func performDataTask(_ request: URLRequest, success: @escaping ((_ data: Data) -> Void), failure: @escaping ((_ error: Error) -> Void)) {
-        let task = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+        let task = session.dataTask(with: request) { (data: Data?, _: URLResponse?, error: Error?) in
             if error != nil {
                 failure(error!)
             } else {

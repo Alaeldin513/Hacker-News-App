@@ -24,7 +24,7 @@ class ShowViewController: UIViewController {
         var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.mode = .annularDeterminate
         hud.label.text = "Fetching Show Stories"
-        HackerNewsAPI.getListOfStoriesAndDownload(type: .show) { downloadedStories,lstOfStories in
+        HackerNewsAPI.getListOfStoriesAndDownload(type: .show) { downloadedStories, lstOfStories in
             DispatchQueue.main.async {
                 self.stories = downloadedStories
                 self.listOfStoriesID = lstOfStories

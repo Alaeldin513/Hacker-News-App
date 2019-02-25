@@ -23,8 +23,7 @@ class ReusableTableViewController: NSObject, UITableViewDelegate, UITableViewDat
     var delegate: ReusableTableViewDelegate?
     
 
-    init(_ table: UITableView, _ data: [Item], availableForDownload: [Int32],viewController: UIViewController, nibFileName: String)
-    {
+    init(_ table: UITableView, _ data: [Item], availableForDownload: [Int32], viewController: UIViewController, nibFileName: String) {
         self.data = data
         self.tableView = table
         self.mainViewController = viewController
@@ -88,18 +87,16 @@ class ReusableTableViewController: NSObject, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print(indexPath.section)
-        guard indexPath.section > (data?.count ?? 0) - 5, indexPath.section < (listOfStoriesID?.count ?? 0) - 1 else { return }
-        var hud = MBProgressHUD.showAdded(to: mainViewController.view, animated: true)
+        guard indexPath.section > (data?.count ?? 0) - 2, indexPath.section < (listOfStoriesID?.count ?? 0) - 1 else { return }
+        let hud = MBProgressHUD.showAdded(to: mainViewController.view, animated: true)
         hud.mode = .annularDeterminate
         let upperBound = min(listOfStoriesID?.count ?? 0, (data?.count ?? 0) + 20)
-        var storiesToDownload = listOfStoriesID?[(data?.count ?? 0)..<upperBound]
+        let storiesToDownload = listOfStoriesID?[(data?.count ?? 0)..<upperBound]
         HackerNewsAPI.download(stories: Array(storiesToDownload ?? [])) { lst in
             DispatchQueue.main.async {
                 if let data = self.data {
                     self.data = data + lst
                 }
-                print(self.data?.count)
                 tableView.reloadData()
                 hud.hide(animated: true)
             }

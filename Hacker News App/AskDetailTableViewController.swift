@@ -47,7 +47,7 @@ class TextViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
         let backButton: UIBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: #selector(dismissView))
-        self.detailsNavigationItem.leftBarButtonItem = backButton;
+        self.detailsNavigationItem.leftBarButtonItem = backButton
     }
     
     func get(lstOfComments: [Int32]) {
@@ -87,7 +87,7 @@ class TextViewController: UIViewController, UITableViewDelegate, UITableViewData
                 var finalComments = Array(self.listOfComments?[0...(indexPath.row)] ?? [])
                 finalComments.append(contentsOf: comments)
                 let maxIndx = self.listOfComments?.count ?? 0
-                var minIndx = min((indexPath.row + 1), maxIndx)
+                let minIndx = min((indexPath.row + 1), maxIndx)
                 finalComments.append(contentsOf: Array(self.listOfComments?[minIndx..<maxIndx] ?? []))
                 self.listOfComments = finalComments
                 self.tableView.reloadData()

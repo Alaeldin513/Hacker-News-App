@@ -11,7 +11,7 @@ import CoreData
 
 class Poll: NSManagedObject, Decodable {
     
-    enum Keys: String, CodingKey{
+    enum Keys: String, CodingKey {
         case id = "id"
         case author = "by"
         case title = "title"
@@ -49,7 +49,7 @@ class Poll: NSManagedObject, Decodable {
         self.dateSince = calculateDaysSince(startDate: time ?? Date())
     }
     
-    func calculateDaysSince(startDate: Date)  -> String {
+    func calculateDaysSince(startDate: Date) -> String {
         let currentDate = Date()
         let components = Set<Calendar.Component>([.second, .minute, .hour, .day, .month, .year])
         let differenceOfDate = Calendar.current.dateComponents(components, from: startDate, to: currentDate)
@@ -69,4 +69,3 @@ class Poll: NSManagedObject, Decodable {
         
     }
 }
-

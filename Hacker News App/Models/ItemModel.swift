@@ -39,7 +39,7 @@ class Item: NSManagedObject, Decodable {
             let managedObjectContext = decoder.userInfo[codingUserInfoKeyManagedObjectContext] as? NSManagedObjectContext,
             let entity = NSEntityDescription.entity(forEntityName: "Item", in: managedObjectContext) else {
                 print("problem decoding item")
-                fatalError("Failed to decode Item")
+                throw ContextErrors.errorLoading("Unable to load context.")
     
         }
         
@@ -69,14 +69,14 @@ class Item: NSManagedObject, Decodable {
         }
     }
     
-    func calculateDaysSince(startDate: Date)  -> String {
+    func calculateDaysSince(startDate: Date) -> String {
         let currentDate = Date()
         let components = Set<Calendar.Component>([.second, .minute, .hour, .day, .month, .year])
         let differenceOfDate = Calendar.current.dateComponents(components, from: startDate, to: currentDate)
         if differenceOfDate.year ?? 0 > 0 {
-            return "\(differenceOfDate.year) Years"
+            return "\(String(describing: differenceOfDate.year)) Years"
         } else if differenceOfDate.month ?? 0 > 0 {
-            return "\(differenceOfDate.month) Months"
+            return "\(String(describing: differenceOfDate.month)) Months"
         } else if differenceOfDate.day ?? 0 > 0 {
             return "\(differenceOfDate.day ?? 0) Days"
         } else if differenceOfDate.hour ?? 0 > 0 {
@@ -89,5 +89,3 @@ class Item: NSManagedObject, Decodable {
         
     }
 }
-
-
